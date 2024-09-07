@@ -1,3 +1,3 @@
 # SIH2024_VHG
-Sih project repository 
-<img width="256" alt="Screenshot 2024-09-05 at 6 07 53 PM" src="https://github.com/user-attachments/assets/86f1de5c-db0a-41f6-a84c-17165a98ad44">
+
+![Screenshot_2024-09-05_at_6 07 53_PM-removebg-preview](https://github.com/user-attachments/assets/b0811257-43dd-4d8d-b7e8-4b12499c7119)
