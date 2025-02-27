@@ -1,29 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Html } from '@react-three/drei';
 import { CircularProgress, Alert, Box } from '@mui/material';
 
-const PlantMarker = ({ plant, onClick }) => {
-  return (
-    <mesh position={[plant.longitude, plant.latitude, 0]} onClick={() => onClick(plant)}>
-      <sphereGeometry args={[0.1, 16, 16]} />
-      <meshStandardMaterial color="green" />
-    </mesh>
-  );
-};
-
-const PlantMapR3F = () => {
+const PlantMap = () => {
   const [plants, setPlants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedPlant, setSelectedPlant] = useState(null);
 
   useEffect(() => {
     const fetchPlants = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/plants');
-        setPlants(response.data);
+        setPlants(response.data); // Set the plants state with response data
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -49,26 +40,46 @@ const PlantMapR3F = () => {
     );
   }
 
+  if (!plants || plants.length === 0) {
+    return (
+      <Alert severity="info" sx={{ mt: 2 }}>
+        No plants available.
+      </Alert>
+    );
+  }
+
   return (
-    <Canvas style={{ height: '80vh', width: '100%' }} camera={{ position: [0, 0, 5] }}>
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[0, 10, 5]} intensity={1} />
-      <OrbitControls />
-
-      {plants.map((plant) => (
-        <PlantMarker key={plant.id} plant={plant} onClick={setSelectedPlant} />
-      ))}
-
-      {selectedPlant && (
-        <Html position={[selectedPlant.longitude, selectedPlant.latitude, 0.5]}>
-          <div style={{ background: 'white', padding: '8px', borderRadius: '8px' }}>
-            <h3>{selectedPlant.name}</h3>
-            <p>{selectedPlant.description}</p>
-          </div>
-        </Html>
-      )}
-    </Canvas>
+    <div style={{ height: '80vh', width: '100%' }}>
+      <MapContainer
+        center={[51.505, -0.09]}
+        zoom={13}
+        style={{ height: '100%', width: '100%' }}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
+        {plants.map((plant) => (
+          plant.latitude && plant.longitude && (
+            <Marker
+              key={plant.id}
+              position={[plant.latitude, plant.longitude]}
+              icon={L.icon({
+                iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+              })}
+            >
+              <Popup>
+                <h3>{plant.name}</h3>
+                <p>{plant.description}</p>
+              </Popup>
+            </Marker>
+          )
+        ))}
+      </MapContainer>
+    </div>
   );
 };
 
-export default PlantMapR3F;
+export default PlantMap;

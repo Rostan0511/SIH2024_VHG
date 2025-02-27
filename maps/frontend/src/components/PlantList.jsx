@@ -1,3 +1,5 @@
+
+// PlantList.jsx
 import { List, ListItem, ListItemText, Typography, Paper } from '@mui/material';
 
 const PlantList = ({ plants }) => {

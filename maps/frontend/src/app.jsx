@@ -1,5 +1,5 @@
 import { CssBaseline, Container, Typography, Box } from '@mui/material';
-import MainLayout from './components/MainLayout'; // Correct import path
+import MainLayout from './components/MainLayout.jsx'; // Correct import path
 
 function App() {
   return (

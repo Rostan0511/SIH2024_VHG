@@ -1,0 +1,28 @@
+/* global.css */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+.leaflet-container {
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Add custom scrollbar for PlantList */
+.MuiPaper-root::-webkit-scrollbar {
+  width: 8px;
+}
+
+.MuiPaper-root::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.MuiPaper-root::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.MuiPaper-root::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
