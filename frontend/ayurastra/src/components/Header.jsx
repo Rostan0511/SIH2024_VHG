@@ -2,7 +2,16 @@ import React, { useState } from 'react';
 import './Header.css';
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State to track menu visibility
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // State for mobile menu
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for login modal
+  const [showMoreOptions, setShowMoreOptions] = useState(false); // State for "View More" toggle
+
+  // Function to close the modal when clicking outside
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) {
+      setIsModalOpen(false);
+    }
+  };
 
   return (
     <header className="header">
@@ -27,7 +36,54 @@ const Header = () => {
       </nav>
 
       {/* Login Button */}
-      <button className="login-btn">Login</button>
+      <button className="login-btn" onClick={() => setIsModalOpen(true)}>
+        Login
+      </button>
+
+      {/* Sign-In Modal */}
+      {isModalOpen && (
+        <div className="modal-overlay" onClick={handleOverlayClick}>
+          <div className="modal-content">
+            <h2>Sign in or create an account</h2>
+
+            {/* Username and Password Inputs */}
+            <div className="input-group">
+              <input type="text" placeholder="Username" className="input-field" />
+              <input type="password" placeholder="Password" className="input-field" />
+              <button className="continue-btn">Continue</button>
+            </div>
+
+            {/* View More Options */}
+            <button className="view-more-btn" onClick={() => setShowMoreOptions(!showMoreOptions)}>
+              {showMoreOptions ? 'Hide Options' : 'View More'}
+            </button>
+
+            {/* Additional Login Options */}
+            {showMoreOptions && (
+              <div className="additional-options">
+                <button className="google-btn">
+                  <img src="/images/googleicon.jpg" alt="Google Icon" className="icon" />
+                  Continue with Google
+                </button>
+                <button className="facebook-btn">
+                  <img src="/images/facebookicon.jpg" alt="Facebook Icon" className="icon" />
+                  Continue with Facebook
+                </button>
+                <button className="apple-btn">
+                  <img src="/images/appleicon.jpg" alt="Apple Icon" className="icon" />
+                  Continue with Apple
+                </button>
+              </div>
+            )}
+
+            {/* "Or" Text and Create Account Link */}
+            <p className="or-text">Or</p>
+            <a href="/create-account" className="create-account-link">
+              Create an account
+            </a>
+          </div>
+        </div>
+      )}
     </header>
   );
 };
